@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import Header from "./ui/header";
 import "./globals.css";
-
-const inter = Inter({ subsets: ["latin"] });
+import { inter } from "./ui/fonts";
 
 export const metadata: Metadata = {
   title: "Inventory Booking dashboard",
@@ -16,7 +15,12 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body className={`${inter.variable} font-sans antialiased bg-cream-200 `}>
+        <div>
+          <Header />
+          <div className="container px-4 mx-auto">{children}</div>
+        </div>
+      </body>
     </html>
   );
 }
