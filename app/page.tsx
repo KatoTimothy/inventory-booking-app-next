@@ -1,3 +1,4 @@
-export default function HomePage() {
-  return <div>This is a home page</div>;
+import { FaHouse } from "react-icons/fa6";
+export default async function HomePage() {
+  return <div>Home page</div>;
 }
