@@ -1,20 +1,59 @@
-import type { Config } from 'tailwindcss'
+import type { Config } from "tailwindcss";
 
 const config: Config = {
   content: [
-    './pages/**/*.{js,ts,jsx,tsx,mdx}',
-    './components/**/*.{js,ts,jsx,tsx,mdx}',
-    './app/**/*.{js,ts,jsx,tsx,mdx}',
+    "./pages/**/*.{js,ts,jsx,tsx,mdx}",
+    "./components/**/*.{js,ts,jsx,tsx,mdx}",
+    "./app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
     extend: {
-      backgroundImage: {
-        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
-        'gradient-conic':
-          'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
+      colors: {
+        accent: {
+          "50": "hsl(206, 61%, 95%)",
+          "100": "hsl(206, 61%, 91%)",
+          "200": "hsl(206, 61%, 82%)",
+          "300": "hsl(206, 61%, 73%)",
+          "400": "hsl(206, 61%, 64%)",
+          "500": "hsl(206, 61%, 55%)",
+          "600": "hsl(206, 61%, 46%)",
+          "700": "hsl(206, 61%, 37%)",
+          "800": "hsl(206, 61%, 28%)",
+          "900": "hsl(206, 61%, 19%)",
+          base: "#173f5f",
+        },
+        teal: {
+          "50": "hsl(174, 48%, 95%)",
+          "100": "hsl(174, 48%, 91%)",
+          "200": "hsl(174, 48%, 82%)",
+          "300": "hsl(174, 48%, 73%)",
+          "400": "hsl(174, 48%, 64%)",
+          "500": "hsl(174, 48%, 55%)",
+          "600": "hsl(174, 48%, 46%)",
+          "700": "hsl(174, 48%, 37%)",
+          "800": "hsl(174, 48%, 28%)",
+          "900": "hsl(174, 48%, 19%)",
+          base: "#3caea3",
+        },
+        cream: {
+          "50": "hsl(51, 58%, 95%)",
+          "100": "hsl(51, 58%, 91%)",
+          "200": "hsl(51, 58%, 82%)",
+          "300": "hsl(51, 58%, 73%)",
+          "400": "hsl(51, 58%, 64%)",
+          "500": "hsl(51, 58%, 55%)",
+          "600": "hsl(51, 58%, 46%)",
+          "700": "hsl(51, 58%, 37%)",
+          "800": "hsl(51, 58%, 28%)",
+          "900": "hsl(51, 58%, 19%)",
+          base: "#eee7be",
+        },
       },
+      fontFamily: {
+        sans:["var(--font-inter)"]
+      }
     },
   },
   plugins: [],
-}
-export default config
+};
+export default config;
