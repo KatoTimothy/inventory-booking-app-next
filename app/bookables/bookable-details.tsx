@@ -3,7 +3,6 @@
 import React, { useState } from "react";
 import { Bookable } from "../lib/types-definitions";
 import staticData from "@/app/lib/static.json";
-import { FaChair, FaHandDots } from "react-icons/fa6";
 
 const { days } = staticData;
 
@@ -11,13 +10,15 @@ function BookableDetails({ bookable }: { bookable: Bookable }) {
   const [toggleDetails, setToggleDetails] = useState(true);
 
   function handleToggleDetails() {
-    setToggleDetails((s) => !s);
+    setToggleDetails((t) => !t);
   }
 
   return (
     <div className="bookable details bg-teal-600 text-white">
       <div className="border-b-8 border-white border-spacing-4 bg-accent-800 item-header flex flex-wrap gap-y-4 justify-between items-center p-4">
-        <div className="text-[24px] font-bold">{bookable.title}</div>
+        <div className="text-[1.25rem] sm:text-[1.5rem] font-bold">
+          {bookable.title}
+        </div>
         <span className="controls">
           <input
             className="mr-1"
@@ -27,7 +28,9 @@ function BookableDetails({ bookable }: { bookable: Bookable }) {
             id="toggle-details"
             onChange={handleToggleDetails}
           />
-          <label htmlFor="toggle-details">Show details</label>
+          <label htmlFor="toggle-details">
+            {toggleDetails ? "Hide" : "Show"} details
+          </label>
         </span>
       </div>
 
@@ -40,8 +43,10 @@ function BookableDetails({ bookable }: { bookable: Bookable }) {
               Availability
             </h1>
             <ul className="p-4">
-              {bookable.days.map((d) => (
-                <li className="list-disc">{days[d]}</li>
+              {bookable.days.map((d, i) => (
+                <li className="list-disc" key={i}>
+                  {days[d]}
+                </li>
               ))}
             </ul>
           </>
