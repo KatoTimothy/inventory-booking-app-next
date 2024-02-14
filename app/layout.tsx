@@ -18,7 +18,7 @@ export default function RootLayout({
       <body className={`${inter.variable} font-sans antialiased bg-cream-200 `}>
         <div>
           <Header />
-          <div className="container px-4 mx-auto">{children}</div>
+          <div className="max-w-5xl mx-auto px-4 ">{children}</div>
         </div>
       </body>
     </html>
