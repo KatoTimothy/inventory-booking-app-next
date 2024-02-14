@@ -1,4 +1,4 @@
-import data from "@/app/data.json";
+import db from "@/app/data.json";
 import { Bookable, Booking } from "./types-definitions";
 import { rejects } from "assert";
 import { resolve } from "path";
@@ -10,7 +10,7 @@ import { resolve } from "path";
 export async function getAllBookables() {
   try {
     await delay();
-    return data.bookables as Bookable[];
+    return db.bookables as Bookable[];
   } catch (error) {
     console.log(error);
     throw new Error("Error fetching bookables");
@@ -26,7 +26,7 @@ async function delay(time: number = 3000) {
 export async function findBookingById(id: number) {
   try {
     await delay();
-    return data.bookings.find((b) => b.id == id);
+    return db.bookings.find((b) => b.id == id);
   } catch (error) {
     throw new Error("Oops No such bookable found..");
   }
@@ -36,16 +36,32 @@ export async function getAllBookings() {
   try {
     //delay reading bookings data by 3seconds
     await delay();
-    return data.bookings as Booking[];
+    return db.bookings as Booking[];
   } catch (error) {
     throw new Error("Oops! Failed to fetch booking...");
+  }
+}
+
+export async function getGridBookings(
+  bookableId: number,
+  startDate: string,
+  endDate: string
+) {
+  await delay();
+  try {
+    return db.bookings.filter(
+      (b) =>
+        b.bookableId === bookableId && b.date >= startDate && b.date <= endDate
+    );
+  } catch (error) {
+    throw Error("Error occured during data fetch...");
   }
 }
 
 export async function findBookableById(id: number) {
   try {
     await delay();
-    return data.bookables.find((b) => b.id == id) as Bookable;
+    return db.bookables.find((b) => b.id == id) as Bookable;
   } catch (error) {
     throw new Error("Ooops! No such bookable found");
   }
@@ -54,7 +70,7 @@ export async function findBookableById(id: number) {
 export async function findBookablesByGroup(group: string) {
   try {
     await delay();
-    return data.bookables.filter((b) => b.group === group) as Bookable[];
+    return db.bookables.filter((b) => b.group === group) as Bookable[];
   } catch (error) {
     throw new Error(
       `No bookables found belonging to specified group name: ${group}`
