@@ -1,5 +1,4 @@
-import React, { Suspense } from "react";
-import BookablesList from "../bookables-list";
+import React from "react";
 import { findBookableById } from "@/app/lib/api";
 import BookableDetails from "../bookable-details";
 
