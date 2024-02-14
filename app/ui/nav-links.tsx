@@ -8,7 +8,7 @@ export function NavLinks() {
   const links = [
     {
       title: "Bookings",
-      href: "/bookings?bookableId=1",
+      href: "/bookings/1",
       icon: <FaCalendarDays />,
     },
     { title: "Bookables", href: "/bookables/1", icon: <FaDoorOpen /> },
@@ -25,7 +25,7 @@ export function NavLinks() {
       <Link
         href={link.href}
         className={clsx(
-          "max-sm:text-sm max-sm:w-24 sm:w-36 sm:min-w-28 flex justify-center items-center border px-2 py-1 rounded-full flex-col  sm:flex-row gap-1",
+          "max-sm:text-xs whitespace-nowrap w-[5rem] sm:w-36 sm:min-w-28 flex justify-center items-center border px-2 py-1 rounded-full flex-col  sm:flex-row gap-1",
           { " border-accent-100": pathName.includes(linkText) },
           { " border-accent-700 ": !pathName.includes(linkText) }
         )}
