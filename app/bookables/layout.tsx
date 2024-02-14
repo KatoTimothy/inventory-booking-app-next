@@ -6,7 +6,7 @@ async function BookablesLayout({ children }: { children: React.ReactNode }) {
   const bookables = await getAllBookables();
 
   return (
-    <div className="grid grid-cols-[minmax(0,2fr),minmax(0,3fr)] gap-x-3 mt-10">
+    <div className="grid grid-cols-1 sm:grid-cols-[minmax(0,1fr),minmax(0,3fr)] gap-8 mt-10">
       <BookablesList bookables={bookables} />
       {children}
     </div>
