@@ -1,63 +1,59 @@
 "use client";
 
 import { Bookable } from "../lib/types-definitions";
-import { useRouter, useParams } from "next/navigation";
+import { useRouter, useParams, useSearchParams } from "next/navigation";
 
 import clsx from "clsx";
 
 function BookablesList({ bookables }: { bookables: Bookable[] }) {
   const router = useRouter();
+
   const params = useParams();
+  const bookableId = Number(params.id) || bookables[0].id;
 
-  const id = Number(params.id) || 1;
-  const groups = Array.from(new Set(bookables.map((b) => b.group)));
-  const bookable = bookables.find((b) => b.id == id);
+  const bookable = bookables.find((b) => b.id == bookableId);
   const group = bookable?.group;
-
-  //State values
-  // const [group, setGroup] = useState(groups[0]);
-  // const [bookableIndex, setBookableIndex] = useState(0);
-
+  const groups = Array.from(new Set(bookables.map((b) => b.group)));
   const bookablesInGroup = bookables.filter((b) => b.group === group);
 
+  // event handlers
   function handleChangeGroup(e: React.ChangeEvent<HTMLSelectElement>) {
-    // setGroup(e.target.value);
-    // setBookableIndex(0);
-
+    const selectedGroup = e.target.value;
     const bookablesInSelectedGroup = bookables.filter(
-      (b) => b.group === e.target.value
+      (b) => b.group === selectedGroup
     );
     router.replace(`/bookables/${bookablesInSelectedGroup[0].id}`);
   }
 
   function handleChangeBookable(id: number) {
-    // setBookableIndex(id);
     router.replace(`/bookables/${id}`);
   }
 
   return (
-    <div className="flex flex-col items-center">
+    // <div className="">
+    <div className="flex flex-col items-center flex-1">
       <div className="group-selector">
         <select
           name="group"
           id="group"
           className={`py-1 px-2 outline border-none outline-1 rounded-sm bg-white`}
           onChange={(e) => handleChangeGroup(e)}
-          value={group}
+          defaultValue={group}
         >
           {groups.map((g, i) => (
             <option key={i}>{g}</option>
           ))}
         </select>
       </div>
-      <ul className="mt-6 w-full flex flex-col gap-2 bookables-list">
+      {/* <div className="w-full"> */}
+      <ul className="w-full mt-6 flex flex-row sm:flex-col pb-2 max-sm:overflow-x-auto max-sm:scroll-m-8 whitespace-nowrap gap-2 bookables-list ">
         {bookablesInGroup.map((b, i) => {
           return (
             <li
               className={`${clsx(
-                "text-center rounded-full px-2 py-1 border border-gray-600",
-                { "bg-accent-800 text-white": b.id === id },
-                { "text-gray-700 bg-white": b.id !== id }
+                "text-center rounded-full px-2 py-1 border border-gray-600 cursor-pointer",
+                { "bg-accent-800 text-white": b.id === bookable?.id },
+                { "text-gray-700 bg-white": b.id !== bookable?.id }
               )}`}
               key={i}
               onClick={() => handleChangeBookable(b.id)}
@@ -67,6 +63,7 @@ function BookablesList({ bookables }: { bookables: Bookable[] }) {
           );
         })}
       </ul>
+      {/* </div> */}
     </div>
   );
 }
