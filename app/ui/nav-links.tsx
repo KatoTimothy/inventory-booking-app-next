@@ -25,7 +25,7 @@ export function NavLinks() {
       <Link
         href={link.href}
         className={clsx(
-          "max-sm:text-xs whitespace-nowrap w-[5rem] sm:w-36 sm:min-w-28 flex justify-center items-center border px-2 py-1 rounded-full flex-col  sm:flex-row gap-1",
+          "max-sm:text-xs whitespace-nowrap w-[5rem] sm:w-36 sm:min-w-28 flex justify-center items-center border px-2 py-1 rounded-3xl flex-col  sm:flex-row gap-1",
           { " border-accent-100": pathName.includes(linkText) },
           { " border-accent-700 ": !pathName.includes(linkText) }
         )}
