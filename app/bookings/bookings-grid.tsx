@@ -1,14 +1,23 @@
+"use client";
+import React from "react";
+import { Booking } from "../lib/types-definitions";
+import { useParams } from "next/navigation";
 
-import React, { Suspense } from "react";
-import { getAllBookables, getAllBookings } from "../lib/api";
-import { Booking, Bookable } from "../lib/types-definitions";
-import { useSearchParams } from "next/navigation";
+function BookingsGrid({ bookings }: { bookings: Booking[] }) {
+  // Read search params
+  const params = useParams();
+  const bookableId = Number(params.id) || bookings[0].bookableId;
 
- async function BookingsGrid() {
-  const bookings = await getAllBookings()
-  const bookables = await getAllBookables();
-
-  return <div className="">Bookings Grid Item: {bookings[0]?.title}</div>;
+  const booking = bookings.find((b) => b.bookableId === bookableId);
+  {
+    console.log(booking?.title);
+  }
+  return (
+    <div className="bookings-grid">
+      <p>Booking: {booking?.title}</p>
+      <p>Session: {booking?.session}</p>
+    </div>
+  );
 }
 
 export default BookingsGrid;
