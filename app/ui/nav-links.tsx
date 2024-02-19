@@ -8,7 +8,7 @@ export function NavLinks() {
   const links = [
     {
       title: "Bookings",
-      href: "/bookings/1",
+      href: "/bookings?bookableId=1",
       icon: <FaCalendarDays />,
     },
     { title: "Bookables", href: "/bookables/1", icon: <FaDoorOpen /> },
