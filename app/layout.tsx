@@ -4,7 +4,7 @@ import "./globals.css";
 import { inter } from "./ui/fonts";
 
 export const metadata: Metadata = {
-  title: "Inventory Booking dashboard",
+  title: "Inventory booking app",
   description: "Dashboard for managing Company inventory",
 };
 
