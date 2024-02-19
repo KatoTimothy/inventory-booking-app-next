@@ -23,3 +23,22 @@ export type User = {
   title: string;
   notes: string;
 };
+
+export type GridBooking = {
+  [session: string]: {
+    [date: string]: {
+      session: string;
+      date: string;
+      title: string;
+      bookableId: number;
+    };
+  };
+};
+export type GridSession = {
+  [date: string]: {
+    session: string;
+    date: string;
+    title: string;
+    bookableId: number;
+  };
+};
