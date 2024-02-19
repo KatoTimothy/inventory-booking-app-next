@@ -1,14 +1,16 @@
 "use client";
 
 import { Bookable } from "../lib/types-definitions";
-import { useRouter, useParams } from "next/navigation";
+import { useRouter, useParams, useSearchParams } from "next/navigation";
 
 import clsx from "clsx";
 
 function BookablesList({ bookables }: { bookables: Bookable[] }) {
-  // Read param
-  const params = useParams();
-  const bookableId = Number(params.id || bookables[0].id);
+  // Read search params
+  const searchParams = useSearchParams();
+  const urlSearchParams = new URLSearchParams(searchParams);
+
+  const bookableId = Number(searchParams.get("bookableId") || bookables[0].id);
 
   const router = useRouter();
 
@@ -26,11 +28,18 @@ function BookablesList({ bookables }: { bookables: Bookable[] }) {
       (b) => b.group === e.target.value
     );
 
-    router.replace(`/bookings/${bookablesInSelectedGroup[0].id}`);
+    //get first bookable from the first group
+    const firstBookable = bookablesInSelectedGroup[0];
+
+    urlSearchParams.set("bookableId", firstBookable.id.toString());
+
+    router.replace(`/bookings?${urlSearchParams.toString()}`);
   }
 
   function handleChangeBookable(id: number) {
-    router.replace(`/bookings/${id}`);
+    urlSearchParams.set("bookableId", id.toString());
+    //navigate to new
+    router.replace(`/bookings?${urlSearchParams.toString()}`);
   }
 
   return (
