@@ -1,10 +1,8 @@
 import db from "@/app/data.json";
 import { Bookable, Booking } from "./types-definitions";
-import { rejects } from "assert";
-import { resolve } from "path";
 
 /**
- * These functions mimick fetching from API
+ * These functions mimick fetching from an API
  * by delaying reading static data for 3seconds*/
 
 export async function getAllBookables() {
@@ -50,8 +48,9 @@ export async function getGridBookings(
   await delay();
   try {
     return db.bookings.filter(
+      // (b) => b.bookableId == bookableId
       (b) =>
-        b.bookableId === bookableId && b.date >= startDate && b.date <= endDate
+        b.date >= startDate && b.date <= endDate && bookableId === b.bookableId
     );
   } catch (error) {
     throw Error("Error occured during data fetch...");
