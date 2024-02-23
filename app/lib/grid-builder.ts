@@ -1,7 +1,13 @@
-import { Bookable, GridBooking, GridSession } from "./types-definitions";
-import { sessions, days } from "./static.json";
+import {
+  Bookable,
+  Booking,
+  GridBooking,
+  GridSession,
+} from "./types-definitions";
+import staticData from "./static.json";
 import { offSetDate, shortISODate } from "./date-wrangler";
 
+const { sessions, days } = staticData;
 
 //generates data required to draw the table of session and dates
 export const generateGridData = (bookable: Bookable, weekStartDate: Date) => {
@@ -30,3 +36,21 @@ export const generateGridData = (bookable: Bookable, weekStartDate: Date) => {
     dates: bookableDates,
   };
 };
+
+export function transformBookings(bookings: Booking[]) {
+  return bookings.reduce((transformedBookings, booking) => {
+    const { session, date } = booking;
+    if (!transformedBookings[session]) {
+      transformedBookings[session] = {};
+    }
+
+    transformedBookings[session][date] = {
+      session,
+      date,
+      bookableId: booking.bookableId,
+      title: booking.title,
+    };
+
+    return transformedBookings as GridBooking;
+  }, {} as any);
+}
