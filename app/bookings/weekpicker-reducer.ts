@@ -1,8 +1,8 @@
-import { getWeek, shortISODate } from "../lib/date-wrangler";
+import { getWeek } from "../lib/date-wrangler";
 
 export const weekPickerReducer = (
   state: { targetDate: Date; startDate: Date; endDate: Date },
-  action: { payload: Date; type: string }
+  action: { payload?: Date; type: string }
 ) => {
   switch (action.type) {
     case "next":
@@ -10,7 +10,7 @@ export const weekPickerReducer = (
     case "prev":
       return getWeek(state.targetDate, -7);
     case "go":
-      return getWeek(action.payload);
+      return getWeek(action.payload as Date);
     case "today":
       return getWeek(new Date());
     default:
