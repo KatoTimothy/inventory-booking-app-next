@@ -42,3 +42,9 @@ export type GridSession = {
     bookableId: number;
   };
 };
+
+export type Week = {
+  baseDate: Date;
+  startDate: Date;
+  endDate: Date;
+};
