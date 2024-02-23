@@ -16,7 +16,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${inter.variable} font-sans antialiased bg-cream-200 `}>
-        <div>
+        <div className=" ">
           <Header />
           <div className="max-w-5xl mx-auto px-4 ">{children}</div>
         </div>
