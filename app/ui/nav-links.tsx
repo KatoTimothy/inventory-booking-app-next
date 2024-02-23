@@ -3,20 +3,27 @@ import clsx from "clsx";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { FaDoorOpen, FaCalendarDays, FaUsers } from "react-icons/fa6";
+import { getWeek, shortISODate } from "../lib/date-wrangler";
 
 export function NavLinks() {
+  const pathName = usePathname();
+  console.log("pathname", pathName);
+
+  let urlSearchParams = new URLSearchParams();
+  // urlSearchParams.set("bookableId", "1");
+  // urlSearchParams.set("date_gte", shortISODate(getWeek(new Date()).startDate));
+  // urlSearchParams.set("date_lte", shortISODate(getWeek(new Date()).endDate));
+
   const links = [
     {
       title: "Bookings",
-      href: "/bookings?bookableId=1",
+      // href: `/bookings?${urlSearchParams.toString()}`,
+      href: `/bookings/1`,
       icon: <FaCalendarDays />,
     },
     { title: "Bookables", href: "/bookables/1", icon: <FaDoorOpen /> },
     { title: "Users", href: "/users", icon: <FaUsers /> },
   ];
-
-  const pathName = usePathname();
-  console.log("pathname", pathName);
 
   const navLinks = links.map((link, index) => {
     const LinkIcon = link.icon;
