@@ -1,45 +1,46 @@
 "use client";
 
 import { Bookable } from "../lib/types-definitions";
-import { useRouter, useParams, useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 import clsx from "clsx";
+import {
+  useBookableListParams,
+  // useBookableListSearchParams,
+} from "../lib/custom-hooks";
 
 function BookablesList({ bookables }: { bookables: Bookable[] }) {
-  // Read search params
+  const router = useRouter();
   const searchParams = useSearchParams();
   const urlSearchParams = new URLSearchParams(searchParams);
 
-  const bookableId = Number(searchParams.get("bookableId") || bookables[0].id);
+  const bookable = useBookableListParams(bookables) || bookables[0];
+  const bookableId = bookable.id;
+  const group = bookable.group;
+  const bookablesInGroup = bookables.filter((b) => b.group == group);
 
-  const router = useRouter();
-
-  // bookable state
-  const bookable = bookables.find((b) => b.id == bookableId);
-  const group = bookable?.group;
-  const bookablesInGroup = bookables.filter((b) => b.group === group);
-
-  // All unique group names
+  // List of unique group names in bookables data
   const groups = Array.from(new Set(bookables.map((b) => b.group)));
 
   // Event handlers
-  function handleChangeGroup(e: React.ChangeEvent<HTMLSelectElement>) {
+  function handleGroupOnChange(e: React.ChangeEvent<HTMLSelectElement>) {
     const bookablesInSelectedGroup = bookables.filter(
       (b) => b.group === e.target.value
     );
-
     //get first bookable from the first group
     const firstBookable = bookablesInSelectedGroup[0];
+    // urlSearchParams.set("bookableId", firstBookable.id.toString());
 
-    urlSearchParams.set("bookableId", firstBookable.id.toString());
-
-    router.replace(`/bookings?${urlSearchParams.toString()}`);
+    router.replace(
+      `/bookings/${firstBookable.id}?${urlSearchParams.toString()}`
+      // `/bookings?${urlSearchParams.toString()}`
+    );
   }
 
   function handleChangeBookable(id: number) {
-    urlSearchParams.set("bookableId", id.toString());
-    //navigate to new
-    router.replace(`/bookings?${urlSearchParams.toString()}`);
+    // urlSearchParams.set("bookableId", id.toString());
+    router.replace(`/bookings/${id}?${urlSearchParams.toString()}`);
+    // router.replace(`/bookings?${urlSearchParams.toString()}`);
   }
 
   return (
@@ -50,7 +51,7 @@ function BookablesList({ bookables }: { bookables: Bookable[] }) {
           name="group"
           id="group"
           className={`py-1 px-2 outline border-none outline-1 rounded-sm bg-white`}
-          onChange={(e) => handleChangeGroup(e)}
+          onChange={(e) => handleGroupOnChange(e)}
           defaultValue={group}
         >
           {groups.map((g, i) => (
@@ -64,7 +65,7 @@ function BookablesList({ bookables }: { bookables: Bookable[] }) {
             <li
               className={`${clsx(
                 "text-center rounded-full px-2 py-1 border border-gray-600 cursor-pointer",
-                { "bg-accent-800 text-white": b.id === bookableId },
+                { "bg-accent-900 text-white": b.id === bookableId },
                 { "text-gray-700 bg-white": b.id !== bookableId }
               )}`}
               key={i}
