@@ -1,55 +1,49 @@
 "use client";
-import React, { useReducer, useRef, useState } from "react";
+import React, { useState } from "react";
 import {
   FaCalendarCheck,
   FaCalendarDay,
   FaChevronLeft,
   FaChevronRight,
 } from "react-icons/fa6";
-import { weekPickerReducer } from "./weekpicker-reducer";
 import { getWeek, shortISODate } from "../lib/date-wrangler";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { Week } from "../lib/types-definitions";
+import { useBookingsSearchParams } from "../lib/custom-hooks";
+import Link from "next/link";
 
 function WeekPicker() {
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+
+  const week = useBookingsSearchParams(searchParams);
+
+  // console.log(week);
+
+  //state
   const [dateInputText, setDateInputText] = useState("2023-06-24");
-  console.log(dateInputText);
 
-  const dateTextInputEl = useRef<HTMLInputElement>();
+  function setUrlSearchParams(week: Week) {
+    console.log(week);
+    const urlSearchParams = new URLSearchParams(searchParams);
+    urlSearchParams.set("date_gte", shortISODate(week.startDate));
+    urlSearchParams.set("date_lte", shortISODate(week.endDate));
 
-  const [week, dispatch] = useReducer(
-    weekPickerReducer,
-    new Date("2023-06-24"),
-    getWeek
-  );
-
-  console.log(week);
-
-  //event handlers
-  function handleNextButtonClick() {
-    dispatch({ type: "next" });
+    console.log(urlSearchParams.toString());
+    return urlSearchParams.toString();
   }
-
-  function handlePrevButtonClick() {
-    dispatch({ type: "prev" });
-  }
-
-  function handleTodayButtonClick() {
-    dispatch({ type: "today" });
-  }
-
-  function handleGoButtonClick() {
-    dispatch({ payload: new Date(dateInputText), type: "go" });
-  }
-  // function handleDateOnChange(e: ) {
-  //   setDateInputText(e)
-  // }
 
   return (
     <div className="week-picker grid grid-cols-[repeat(4,minmax(auto,1fr))] md:grid-cols-[repeat(6,minmax(auto,1fr))] gap-2 ">
       {/* Today's date button */}
-      <button className="" onClick={handleTodayButtonClick}>
-        <FaCalendarDay />
-        <span className="">Today</span>
-      </button>
+
+      <Link
+        className="btn-link"
+        href={`${pathname}?${setUrlSearchParams(getWeek(new Date()))}`}
+      >
+        Today
+      </Link>
 
       {/* Date text input box */}
       <div className="col-span-2 flex justify-center">
@@ -65,22 +59,35 @@ function WeekPicker() {
         />
       </div>
       {/* Go button */}
-      <button className="w-auto" onClick={handleGoButtonClick}>
+      <Link
+        className="btn-link"
+        href={`${pathname}?${setUrlSearchParams(
+          getWeek(new Date(dateInputText))
+        )}`}
+      >
         <FaCalendarCheck />
         <span className="">Go</span>
-      </button>
+      </Link>
 
       {/* Previous date button */}
-      <button className="md:order-first" onClick={handlePrevButtonClick}>
+      <Link
+        className=" btn-link md:order-first"
+        href={`${pathname}?${setUrlSearchParams(getWeek(week.startDate, -7))}`}
+      >
         <FaChevronLeft />
         <span className="">Prev</span>
-      </button>
+      </Link>
 
       {/* Next button */}
-      <button className="col-start-[-2]" onClick={handleNextButtonClick}>
+      <Link
+        className="btn-link col-start-[-2]"
+        href={`${pathname}?${setUrlSearchParams(
+          getWeek(new Date(week.startDate), 7)
+        )}`}
+      >
         <span className="">Next</span>
         <FaChevronRight />
-      </button>
+      </Link>
     </div>
   );
 }
