@@ -1,14 +1,8 @@
-"use client";
-
-import { Booking } from "../lib/types-definitions";
-
-import WeekPicker from "./week-picker";
 import BookingsGrid from "./bookings-grid";
 import { getAllBookings } from "../lib/api";
+import { Bookable, Booking } from "../lib/types-definitions";
 
-async function BookingsPageWrapper() {
-  const bookings = await getAllBookings();
-
+async function BookingsPageWrapper({ bookings }: { bookings: Booking[] }) {
   return (
     <div className="bookings-grid">
       <BookingsGrid bookings={bookings} />
