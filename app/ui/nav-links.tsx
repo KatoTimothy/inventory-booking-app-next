@@ -10,18 +10,22 @@ export function NavLinks() {
   console.log("pathname", pathName);
 
   let urlSearchParams = new URLSearchParams();
-  // urlSearchParams.set("bookableId", "1");
+  urlSearchParams.set("bookableId", "1");
   // urlSearchParams.set("date_gte", shortISODate(getWeek(new Date()).startDate));
   // urlSearchParams.set("date_lte", shortISODate(getWeek(new Date()).endDate));
 
   const links = [
     {
       title: "Bookings",
-      // href: `/bookings?${urlSearchParams.toString()}`,
-      href: `/bookings/1`,
+      href: `/bookings?${urlSearchParams.toString()}`,
+      // href: `/bookings/1`,
       icon: <FaCalendarDays />,
     },
-    { title: "Bookables", href: "/bookables/1", icon: <FaDoorOpen /> },
+    {
+      title: "Bookables",
+      href: `/bookables?${urlSearchParams.toString()}`,
+      icon: <FaDoorOpen />,
+    },
     { title: "Users", href: "/users", icon: <FaUsers /> },
   ];
 
