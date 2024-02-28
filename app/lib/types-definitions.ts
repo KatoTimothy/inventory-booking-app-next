@@ -14,7 +14,7 @@ export type Booking = {
   title: string;
   bookerId: number;
   id: number;
-};
+} | null;
 
 export type User = {
   id: number;
