@@ -3,7 +3,7 @@ import Spinner from "@/app/ui/Spinner";
 
 function PageLoader() {
   return (
-    <div className="min-h-[20vh] flex items-center justify-center text-accent-800 text-[150%]">
+    <div className="h-36 flex items-center justify-center text-accent-800 text-[150%]">
       <Spinner />
     </div>
   );
