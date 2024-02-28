@@ -6,24 +6,35 @@ import {
 import { getWeek, shortISODate } from "./date-wrangler";
 import { Bookable } from "./types-definitions";
 
-//Reads search parameters for start date value and returns matching week object
-export function useBookingsSearchParams(searchParams: ReadonlyURLSearchParams) {
-  const startDate = searchParams.get("date_gte") || shortISODate(new Date());
-  console.log(getWeek(new Date(startDate)));
-  return getWeek(new Date(startDate));
+//Reads search parameters for start date value
+export function useBookingsSearchParams(bookables: Bookable[]) {
+  //read search parameters
+  const searchParams = useSearchParams();
+  const startDate =
+    searchParams.get("date_gte") || shortISODate(new Date("2023-06-24"));
+  const bookableId = Number(searchParams.get("bookableId"));
+
+  const bookable = bookables.find((b) => b.id === bookableId) || bookables[0];
+  const week = getWeek(new Date(startDate));
+
+  return {
+    bookable,
+    week,
+  };
 }
 
 //Reads reads bookableId from param value and returns bookable that it matches
-export function useBookableListSearchParams(bookables: Bookable[]) {
+export function useBookablesSearchParams(bookables: Bookable[]) {
   const searchParams = useSearchParams();
   const bookableId = Number(searchParams.get("bookableId")) || bookables[0].id;
 
   return bookables.find((b) => b.id === bookableId);
 }
 
-export function useBookableListParams(bookables: Bookable[]) {
-  const searchParams = useParams();
-  const bookableId = Number(searchParams.bookableId) || bookables[0].id;
+//Reads search params named bookableId and returns matching bookable
+export function useBookablesParams(bookables: Bookable[]) {
+  const params = useParams();
+  const bookableId = Number(params.bookableId);
 
-  return bookables.find((b) => b.id === bookableId);
+  return bookables.find((b) => b.id === bookableId) || bookables[0];
 }
