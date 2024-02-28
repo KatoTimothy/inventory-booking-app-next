@@ -44,12 +44,13 @@ export function transformBookings(bookings: Booking[]) {
       transformedBookings[session] = {};
     }
 
-    transformedBookings[session][date] = {
-      session,
-      date,
-      bookableId: booking.bookableId,
-      title: booking.title,
-    };
+    transformedBookings[session][date] = booking as Booking;
+    // transformedBookings[session][date] = {
+    //   session,
+    //   date,
+    //   bookableId: booking.bookableId,
+    //   title: booking.title,
+    // };
 
     return transformedBookings as GridBooking;
   }, {} as any);
