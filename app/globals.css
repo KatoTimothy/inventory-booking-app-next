@@ -8,13 +8,21 @@
     @apply inline-flex justify-center items-center gap-x-1 bg-accent-700 text-white rounded-3xl px-3 py-2 cursor-pointer;
   }
   .bookings-grid th {
-    @apply bg-accent-900 text-white text-nowrap ;
+    @apply bg-accent-900 text-white text-nowrap whitespace-nowrap;
   }
   .bookings-grid td,
   .bookings-grid th {
     @apply p-2 h-20 border border-cream-200 text-center;
   }
-  
+
+  .bookings-grid.selected {
+    @apply bg-cyan-600 text-white;
+  }
+
+  .bookings-grid.idle {
+    @apply bg-white text-gray-800;
+  }
+
   .bookings-grid {
     @apply overflow-x-auto;
   }
