@@ -13,12 +13,5 @@ async function BookablesPage() {
     </div>
   );
 }
-type BookablesPageSearchParams = {
-  searchParams: {
-    bookableId: string;
-    date_lte: string;
-    date_gte: string;
-  };
-};
 
 export default BookablesPage;
