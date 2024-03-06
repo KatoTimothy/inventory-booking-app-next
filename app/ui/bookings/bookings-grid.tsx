@@ -6,30 +6,23 @@ import {
   transformBookings as getTransformedBookings,
 } from "../../lib/grid-builder";
 import clsx from "clsx";
+import { useBookingsSearchParams } from "@/app/lib/custom-hooks";
 
 export default function BookingsGrid({
   bookings,
-  bookable,
-  week,
-  setBooking,
-  booking,
-}: {
-  bookings: Booking[];
-  bookable: Bookable;
-  week: Week;
-  setBooking: Dispatch<SetStateAction<null>>;
-  booking: Booking;
-}) {
-  //Generates grid from bookable and selected week
+  bookables,
+}: BookingsGridProps) {
+  //reads searchParams and returns data associated with them
+  const { bookable, week } = useBookingsSearchParams(bookables);
+
+  //read data associated with current bookable and week
   const { gridData, sessions, dates } = generateGridData(
     bookable,
     week.startDate
   );
 
+  //transformed booking
   const transformedBookings = getTransformedBookings(bookings);
-
-  // console.log("Transformed:", transformedBookings);
-  // console.log("Bookings: ", bookings);
 
   function Cell({
     session,
@@ -39,18 +32,14 @@ export default function BookingsGrid({
     date: string;
     index: number;
   }) {
-    let isSelected = booking?.date === date && booking?.session == session;
+    // let isSelected = booking?.date === date && booking?.session == session;
 
     return (
       <td
         className={clsx(
-          "cursor-pointer",
-          { "bg-cyan-600 text-white": isSelected },
-          { "bg-white": !isSelected }
+          "cursor-pointer bg-white text-gray-700"
+          // { "bg-white": !isSelected }
         )}
-        onClick={() => {
-          setBooking(transformedBookings[session][date]);
-        }}
       >
         {transformedBookings[session]?.[date]?.title ||
           gridData[session][date].title}
@@ -86,3 +75,8 @@ export default function BookingsGrid({
     </div>
   );
 }
+
+type BookingsGridProps = {
+  bookables: Bookable[];
+  bookings: Booking[];
+};
