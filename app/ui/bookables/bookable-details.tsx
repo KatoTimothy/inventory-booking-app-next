@@ -1,23 +1,27 @@
 "use client";
-
-import React, { useState } from "react";
+import React, { useState, useTransition } from "react";
 import { Bookable } from "../../lib/types-definitions";
 import staticData from "@/app/lib/static.json";
+import { useBookablesSearchParams } from "@/app/lib/custom-hooks";
+import clsx from "clsx";
 
 const { days } = staticData;
 
-function BookableDetails({ bookable }: { bookable: Bookable }) {
+function BookableDetails({ bookables }: BookableDetailsProps) {
+  const bookable = useBookablesSearchParams(bookables);
   const [toggleDetails, setToggleDetails] = useState(true);
 
   function handleToggleDetails() {
     setToggleDetails((t) => !t);
   }
 
-  return (
-    <div className="bookable details bg-teal-600 text-white">
+  return bookable ? (
+    <div
+      className={clsx("bookable details bg-teal-600 text-white opacity-100")}
+    >
       <div className="border-b-8 border-white border-spacing-4 bg-accent-800 item-header flex flex-wrap gap-y-4 justify-between items-center p-4">
         <div className="text-[1.25rem] sm:text-[1.5rem] font-bold">
-          {bookable.title}
+          {bookable?.title}
         </div>
         <span className="controls">
           <input
@@ -35,7 +39,7 @@ function BookableDetails({ bookable }: { bookable: Bookable }) {
       </div>
 
       <div className="item-details p-4">
-        <p className="mb-4">{bookable.notes}</p>
+        <p className="mb-4">{bookable?.notes}</p>
 
         {toggleDetails && (
           <>
@@ -43,7 +47,7 @@ function BookableDetails({ bookable }: { bookable: Bookable }) {
               Availability
             </h1>
             <ul className="p-4">
-              {bookable.days.map((d, i) => (
+              {bookable?.days.map((d, i) => (
                 <li className="list-disc" key={i}>
                   {days[d]}
                 </li>
@@ -53,7 +57,13 @@ function BookableDetails({ bookable }: { bookable: Bookable }) {
         )}
       </div>
     </div>
+  ) : (
+    "No details available"
   );
 }
+
+type BookableDetailsProps = {
+  bookables: Bookable[];
+};
 
 export default BookableDetails;
