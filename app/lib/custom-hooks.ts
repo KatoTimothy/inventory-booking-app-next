@@ -1,5 +1,4 @@
 import {
-  ReadonlyURLSearchParams,
   useParams,
   useSearchParams,
 } from "next/navigation";
