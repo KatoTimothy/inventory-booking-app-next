@@ -1,55 +1,70 @@
 "use client";
-
+import { useState } from "react";
 import { Bookable } from "../../lib/types-definitions";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 import clsx from "clsx";
-import { useBookablesSearchParams } from "@/app/lib/custom-hooks";
+import { useTransition, useOptimistic } from "react";
+import Spinner from "../Spinner";
 
-function BookablesList({
-  bookables,
-}: // bookable,
-{
-  bookables: Bookable[];
-  // bookable: Bookable;
-}) {
+function BookablesList({ bookables }: BookablesListProps) {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
+  const [pending, startTransition] = useTransition();
 
-  const bookable = useBookablesSearchParams(bookables);
+  const bookableId = Number(searchParams.get("bookableId")) || bookables[0].id;
 
-  const group = bookable?.group;
-  const groups = Array.from(new Set(bookables.map((b) => b.group)));
-  const bookablesInGroup = bookables.filter((b) => b.group === group);
+  //deferred states
+  const [optimisticBookables] = useOptimistic(bookables);
+  const [optimisticBookableId, setOptimisticBookableId] =
+    useOptimistic(bookableId);
+
+  const bookable = optimisticBookables.find(
+    (b) => b.id === optimisticBookableId
+  );
+
+  const groups = Array.from(new Set(optimisticBookables.map((b) => b.group)));
+  const bookablesInGroup = optimisticBookables.filter(
+    (b) => b.group === bookable?.group
+  );
 
   //UI helpers
-  function getUrl(bookableId: number) {
+  function updateBookableParamsUrl(bookableId: number) {
     if (pathname.includes("bookables")) {
       const urlSearchParams = new URLSearchParams();
       urlSearchParams.set("bookableId", bookableId.toString());
-      return `/bookables?${urlSearchParams.toString()}`;
+      return `${pathname}?${urlSearchParams.toString()}`;
     } else {
       const urlSearchParams = new URLSearchParams(searchParams);
       urlSearchParams.set("bookableId", bookableId.toString());
-      return `/bookings?${urlSearchParams.toString()}`;
+      return `${pathname}?${urlSearchParams.toString()}`;
     }
   }
 
   // event handlers
   function handleChangeGroup(e: React.ChangeEvent<HTMLSelectElement>) {
     const selectedGroup = e.target.value;
-    const bookablesInSelectedGroup = bookables.filter(
-      (b) => b.group === selectedGroup
-    );
-    router.replace(getUrl(bookablesInSelectedGroup[0].id));
+
+    const getFirstBookableInSelectedGroup = () =>
+      optimisticBookables.filter((b) => b.group === selectedGroup)[0];
+
+    startTransition(() => {
+      setOptimisticBookableId(getFirstBookableInSelectedGroup().id);
+      router.replace(
+        updateBookableParamsUrl(getFirstBookableInSelectedGroup().id)
+      );
+    });
   }
 
-  
-  function handleChangeBookable(id: number) {
-    router.replace(getUrl(id));
+  function handleOnClickBookable(id: number) {
+    startTransition(() => {
+      setOptimisticBookableId(id);
+      router.replace(updateBookableParamsUrl(id));
+    });
   }
 
+  // UI
   return (
     // <div className="">
     <div className="flex flex-col items-center flex-1">
@@ -59,7 +74,7 @@ function BookablesList({
           id="group"
           className={`py-1 px-2 outline border-none outline-1 rounded-sm bg-white`}
           onChange={(e) => handleChangeGroup(e)}
-          defaultValue={group}
+          defaultValue={bookable?.group}
         >
           {groups.map((g, i) => (
             <option key={i}>{g}</option>
@@ -71,15 +86,22 @@ function BookablesList({
         {bookablesInGroup.map((b, i) => {
           return (
             <li
-              className={`${clsx(
-                "text-center rounded-full px-2 py-1 border border-gray-600 cursor-pointer",
-                { "bg-accent-800 text-white": b.id === bookable?.id },
-                { "text-gray-700 bg-white": b.id !== bookable?.id }
+              className={` ${clsx(
+                "text-center rounded-full px-2 py-1 border border-gray-600 cursor-pointer inline-flex gap-2 justify-center items-center",
+                { "bg-accent-800 text-white": b.id === optimisticBookableId },
+                { "text-gray-700 bg-white": b.id !== optimisticBookableId }
               )}`}
               key={i}
-              onClick={() => handleChangeBookable(b.id)}
+              onClick={() => handleOnClickBookable(b.id)}
             >
               {b.title}
+              {pending && b.id === optimisticBookableId ? (
+                <span className="text-sm">
+                  <Spinner />
+                </span>
+              ) : (
+                ""
+              )}
             </li>
           );
         })}
@@ -88,5 +110,8 @@ function BookablesList({
     </div>
   );
 }
+type BookablesListProps = {
+  bookables: Bookable[];
+};
 
 export default BookablesList;
