@@ -19,7 +19,7 @@ function BookableDetails({ bookables }: BookableDetailsProps) {
     <div
       className={clsx("bookable details bg-teal-600 text-white opacity-100")}
     >
-      <div className="border-b-8 border-white border-spacing-4 bg-accent-800 item-header flex flex-wrap gap-y-4 justify-between items-center p-4">
+      <div className="border-b-8 border-white border-spacing-4 bg-accent-800 item-header flex flex-wrap gap-8 justify-between items-center p-4">
         <div className="text-[1.25rem] sm:text-[1.5rem] font-bold">
           {bookable?.title}
         </div>
