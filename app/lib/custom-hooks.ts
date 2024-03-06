@@ -28,7 +28,7 @@ export function useBookablesSearchParams(bookables: Bookable[]) {
   const searchParams = useSearchParams();
   const bookableId = Number(searchParams.get("bookableId")) || bookables[0].id;
 
-  return bookables.find((b) => b.id === bookableId);
+  return bookables.find((b) => b.id === bookableId) || bookables[0];
 }
 
 //Reads search params named bookableId and returns matching bookable
