@@ -14,11 +14,13 @@ function BookablesList({ bookables }: BookablesListProps) {
   const [pending, startTransition] = useTransition();
 
   const bookableId = Number(searchParams.get("bookableId")) || bookables[0].id;
+  const group = searchParams.get("group") || bookables[0].group;
 
   //deferred states
   const [optimisticBookables] = useOptimistic(bookables);
   const [optimisticBookableId, setOptimisticBookableId] =
     useOptimistic(bookableId);
+  const [optimisticGroup, setOptimisticGroup] = useOptimistic(group);
 
   const bookable = optimisticBookables.find(
     (b) => b.id === optimisticBookableId
@@ -26,19 +28,24 @@ function BookablesList({ bookables }: BookablesListProps) {
 
   const groups = Array.from(new Set(optimisticBookables.map((b) => b.group)));
   const bookablesInGroup = optimisticBookables.filter(
-    (b) => b.group === bookable?.group
+    (b) => b.group === optimisticGroup
   );
 
   //UI helpers
-  function updateBookableParamsUrl(bookableId: number) {
+  function updateBookableParamsUrl(
+    bookableId: number,
+    group: string = optimisticBookables[0].group
+  ) {
     if (pathname.includes("bookables")) {
       const urlSearchParams = new URLSearchParams();
       urlSearchParams.set("bookableId", bookableId.toString());
-      return `${pathname}?${urlSearchParams.toString()}`;
+      urlSearchParams.set("group", group);
+      return `?${urlSearchParams.toString()}`;
     } else {
       const urlSearchParams = new URLSearchParams(searchParams);
       urlSearchParams.set("bookableId", bookableId.toString());
-      return `${pathname}?${urlSearchParams.toString()}`;
+      urlSearchParams.set("group", group);
+      return `?${urlSearchParams.toString()}`;
     }
   }
 
@@ -51,17 +58,21 @@ function BookablesList({ bookables }: BookablesListProps) {
 
     startTransition(() => {
       setOptimisticBookableId(getFirstBookableInSelectedGroup().id);
-      router.replace(
-        updateBookableParamsUrl(getFirstBookableInSelectedGroup().id)
-      );
+      setOptimisticGroup(selectedGroup);
     });
+    router.replace(
+      updateBookableParamsUrl(
+        getFirstBookableInSelectedGroup().id,
+        selectedGroup
+      )
+    );
   }
 
   function handleOnClickBookable(id: number) {
     startTransition(() => {
       setOptimisticBookableId(id);
-      router.replace(updateBookableParamsUrl(id));
     });
+    router.replace(updateBookableParamsUrl(id));
   }
 
   // UI
@@ -74,7 +85,7 @@ function BookablesList({ bookables }: BookablesListProps) {
           id="group"
           className={`py-1 px-2 outline border-none outline-1 rounded-sm bg-white`}
           onChange={(e) => handleChangeGroup(e)}
-          defaultValue={bookable?.group}
+          defaultValue={optimisticGroup}
         >
           {groups.map((g, i) => (
             <option key={i}>{g}</option>
