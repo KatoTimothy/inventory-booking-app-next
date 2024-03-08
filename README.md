@@ -1,5 +1,5 @@
 # Inventory Booking Management App
-A minimal inventory booking management app
+A minimal Inventory Booking Management app
 
 ### Features:
 1. User is able to select bookable Item and view the corresponding details like days and sessions it is available for booking
