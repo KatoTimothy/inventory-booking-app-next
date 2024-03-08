@@ -1,7 +1,12 @@
-# Inventory booking app
+# Inventory Booking Management App
+A minimal Inventory Booking Management app
 
-A system that enables users to book company inventory and is categorized into two groups namely; kits and rooms. Each bookable Item is available for booking on particular sessions and days.
+### Features:
+1. User is able to select bookable Item and view the corresponding details like days and sessions it is available for booking
+2. User is able view list of bookable items filtered by group
+3. User is able to view in tabular format, the bookings associated with a particular bookable item in a particular week.
+4. User is able to edit and delete a booking
+5. User is able to view list of all people who have booked items
 
-On the bookables page , users are able to select a bookable item  view its details like days and sessions it can be booked
-
-On the bookings page, users view a grid/table consisting of actual bookings made for a selected bookable item.
+### Built with
+React/Next.js, Typescript and Tailwind css
