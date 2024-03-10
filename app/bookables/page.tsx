@@ -7,7 +7,7 @@ async function BookablesPage() {
   const bookables = await getAllBookables();
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-[minmax(0,1fr),minmax(0,3fr)] gap-8 mt-10">
+    <div className="grid grid-cols-1 sm:grid-cols-[minmax(0,1fr),minmax(0,3fr)] gap-8 mt-10 group">
       <BookablesList bookables={bookables} />
       <BookableDetails bookables={bookables} />
     </div>
