@@ -12,11 +12,11 @@ async function BookingsPage() {
   ]);
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-[minmax(0,1fr),minmax(0,3fr)] gap-8 justify-between mt-10">
+    <div className="grid grid-cols-1 sm:grid-cols-[minmax(0,1fr),minmax(0,3fr)] gap-8 justify-between mt-10 group">
       <BookablesList bookables={bookables} />
       <div className="bookings-section">
         <WeekPicker />
-        <div className="bookings-grid">
+        <div className="bookings-grid group-has-[[data-pending=bookable]]:animate-pulse">
           <BookingsGrid bookings={bookings} bookables={bookables} />
         </div>
       </div>
