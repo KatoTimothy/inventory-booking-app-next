@@ -17,7 +17,9 @@ function BookableDetails({ bookables }: BookableDetailsProps) {
 
   return bookable ? (
     <div
-      className={clsx("bookable details bg-teal-600 text-white opacity-100")}
+      className={clsx(
+        "bookable details bg-teal-600 text-white opacity-100 group-has-[[data-pending=bookable]]:animate-pulse"
+      )}
     >
       <div className="border-b-8 border-white border-spacing-4 bg-accent-800 item-header flex flex-wrap gap-8 justify-between items-center p-4">
         <div className="text-[1.25rem] sm:text-[1.5rem] font-bold">
