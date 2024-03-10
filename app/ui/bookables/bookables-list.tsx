@@ -13,6 +13,7 @@ function BookablesList({ bookables }: BookablesListProps) {
   const searchParams = useSearchParams();
   const [pending, startTransition] = useTransition();
 
+  //read params
   const bookableId = Number(searchParams.get("bookableId")) || bookables[0].id;
   const group = searchParams.get("group") || bookables[0].group;
 
@@ -21,10 +22,6 @@ function BookablesList({ bookables }: BookablesListProps) {
   const [optimisticBookableId, setOptimisticBookableId] =
     useOptimistic(bookableId);
   const [optimisticGroup, setOptimisticGroup] = useOptimistic(group);
-
-  const bookable = optimisticBookables.find(
-    (b) => b.id === optimisticBookableId
-  );
 
   const groups = Array.from(new Set(optimisticBookables.map((b) => b.group)));
   const bookablesInGroup = optimisticBookables.filter(
@@ -78,7 +75,10 @@ function BookablesList({ bookables }: BookablesListProps) {
   // UI
   return (
     // <div className="">
-    <div className="flex flex-col items-center flex-1">
+    <div
+      className="flex flex-col items-center flex-1"
+      data-pending={pending ? "bookable" : undefined}
+    >
       <div className="group-selector">
         <select
           name="group"
@@ -106,13 +106,13 @@ function BookablesList({ bookables }: BookablesListProps) {
               onClick={() => handleOnClickBookable(b.id)}
             >
               {b.title}
-              {pending && b.id === optimisticBookableId ? (
+              {/* {pending && b.id === optimisticBookableId ? (
                 <span className="text-sm">
                   <Spinner />
                 </span>
               ) : (
                 ""
-              )}
+              )} */}
             </li>
           );
         })}
