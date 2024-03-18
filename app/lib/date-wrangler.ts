@@ -1,19 +1,18 @@
-import { off } from "process";
 import { Week } from "./types-definitions";
 
-//offsets given date by number of days
-export function offSetDate(date: string | Date, offset: number) {
+//Adds/Subtracts days given date
+export function addDays(date: string | Date, days: number) {
   const dateClone = new Date(date);
-  dateClone.setDate(dateClone.getDate() + offset);
+  dateClone.setDate(dateClone.getDate() + days);
   return dateClone;
 }
 
 //generate a week object given base date and offset value
 export function getWeek(date: Date, offset: number = 0): Week {
-  console.log(date);
-  const baseDate = offSetDate(date, offset);
-  const startDate = offSetDate(baseDate, -baseDate.getDay());
-  const endDate = offSetDate(baseDate, 6 - baseDate.getDay());
+  const baseDate = addDays(date, offset);
+  const day = baseDate.getDay();
+  const startDate = addDays(baseDate, -day);
+  const endDate = addDays(baseDate, 6 - day);
   return { baseDate, startDate, endDate };
 }
 
