@@ -16,7 +16,7 @@ async function BookingsPage() {
       <BookablesList bookables={bookables} />
       <div className="bookings-section">
         <WeekPicker />
-        <div className="bookings-grid group-has-[[data-pending=bookable]]:animate-pulse">
+        <div className="bookings-grid group-has-[[data-pending=bookable]]:animate-pulse group-has-[[data-pending=week]]:animate-pulse">
           <BookingsGrid bookings={bookings} bookables={bookables} />
         </div>
       </div>
