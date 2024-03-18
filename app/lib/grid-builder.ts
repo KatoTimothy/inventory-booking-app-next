@@ -5,7 +5,7 @@ import {
   GridSession,
 } from "./types-definitions";
 import staticData from "./static.json";
-import { offSetDate, shortISODate } from "./date-wrangler";
+import { addDays, shortISODate } from "./date-wrangler";
 
 const { sessions, days } = staticData;
 
@@ -13,7 +13,7 @@ const { sessions, days } = staticData;
 export const generateGridData = (bookable: Bookable, weekStartDate: Date) => {
   const bookableSessions = bookable.sessions.map((s) => sessions[s]);
   const bookableDates = bookable.days.map((d) =>
-    shortISODate(offSetDate(shortISODate(weekStartDate), d))
+    shortISODate(addDays(shortISODate(weekStartDate), d))
   );
 
   let gridData = {} as any;
